@@ -175,6 +175,7 @@ public class Validator {
 						Transaction p = transactions.get(j);
 						if(t.getInput() == p.getInput() && t.getPrevioustx() == p.getPrevioustx() && t.getValues()[0] == p.getValues()[0]) {
 							System.out.println(j+"-->"+i);
+							transactions.remove(j);
 						}
 					}
 				}
