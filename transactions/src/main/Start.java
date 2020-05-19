@@ -38,7 +38,7 @@ public class Start {
 		}
 	}
 	
-	public void broadcastBlock(HashMap<String, String> transaction) {
+	public void broadcastTransaction(HashMap<String, String> transaction) {
 
 		List<String> participants = getParticipants();
 		System.out.println("Broadcast <" + transaction + "> to " + participants);
