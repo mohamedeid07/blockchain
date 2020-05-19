@@ -53,7 +53,6 @@ public class SimpleChain {
     }
 
 	public void addTransaction(HashMap<String, String> transaction) {
-		// TODO Auto-generated method stub
 		
 	}
 }
