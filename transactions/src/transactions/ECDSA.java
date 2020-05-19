@@ -67,14 +67,13 @@ public class ECDSA {
         obj.put("publicKey", pub);
         obj.put("signature", sig);
         obj.put("message", plaintext);
-        obj.put("algorithm", ALGO);
 
         return obj;
     }
 
     public boolean receiver(HashMap<String,String> obj) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, UnsupportedEncodingException, SignatureException {
 
-        Signature ecdsaVerify = Signature.getInstance(obj.get("algorithm"));
+        Signature ecdsaVerify = Signature.getInstance(ALGO);
         KeyFactory kf = KeyFactory.getInstance("EC");
 
         EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(obj.get("publicKey")));

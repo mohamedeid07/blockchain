@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 
 public class Client {
@@ -20,10 +21,10 @@ public class Client {
 	}
 
 
-	public HashMap<String,String> newTransaction(Transaction T){
+	public HashMap<String,String> newTransaction(Transaction previoustx){
 		try {
 			//Transaction to Hash
-			String Hash = SHA.toHexString(SHA.getSHA(T.toString()));
+			String Hash = SHA.toHexString(SHA.getSHA(previoustx.toString()));
 			//Hash to Signature
 			HashMap<String,String> obj = EC.sender(Hash);
 			
@@ -45,6 +46,16 @@ public class Client {
 		return null;
 	}
 	
+	public boolean validate(HashMap<String,String> obj) {
+		try {
+			return EC.receiver(obj);
+		} catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | UnsupportedEncodingException
+				| SignatureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 
 }

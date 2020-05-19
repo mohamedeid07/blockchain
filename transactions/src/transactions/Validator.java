@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Validator {
 	
-	ArrayList<Transaction> transactions ;
+	HashMap<Integer, Transaction> transactions ;
 
-	public ArrayList<Transaction> readFile(){
+	public HashMap<Integer, Transaction> readFile(){
 		
-		transactions = new ArrayList<Transaction>();
+		transactions = new HashMap<Integer, Transaction>();
 		
 		BufferedReader r ;
 		
@@ -23,7 +24,7 @@ public class Validator {
 				
 				Transaction current = parseLine(line);
 				
-				transactions.add(current);
+				transactions.put(current.getId(), current);
 				
 //				printTransaction(current);
 				
@@ -118,6 +119,8 @@ public class Validator {
 		for(int i =0 ; i< output.length ; i++){
 			System.out.println(output[i] + " " + values[i]);
 		}
+		
+		System.out.println("+++++++++++++++++++++++++++++++++++");
 	}
 	
 	public boolean validateBalance(Transaction t){
@@ -126,7 +129,7 @@ public class Validator {
 		
 		int outputindex = t.getOutputindex() - 1 ;
 		
-		Transaction prev = transactions.get(prevTransactionId - 1);
+		Transaction prev = transactions.get(prevTransactionId);
 		
 		double outputAmount = 0;
 		double[] values = t.getValues();
