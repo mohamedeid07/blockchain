@@ -10,26 +10,33 @@ import java.util.HashMap;
 public class Client {
 	private int id;
 	private ECDSA EC;
-	
+
 	public Client(int id) {
 		this.id = id;
 		EC = new ECDSA();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
 
-
-	public HashMap<String,String> newTransaction(Transaction previoustx){
+	public HashMap<String, String> newTransaction(Transaction previoustx) {
+		//new Validator().printTransaction(previoustx);
+		String s = previoustx.getId() + " " + previoustx.getInput() + " " + previoustx.getPrevioustx() + " "
+				+ previoustx.getOutputindex();
+		int[] output = previoustx.getOutput();
+		double[] values = previoustx.getValues();
+		for (int i = 0; i < output.length; i++) {
+			s = s + " " + output[i] + " " + values[i];
+		}
 		try {
-			//Transaction to Hash
-			String Hash = SHA.toHexString(SHA.getSHA(previoustx.toString()));
-			//Hash to Signature
-			HashMap<String,String> obj = EC.sender(Hash);
-			
+			// Transaction to Hash
+			String Hash = SHA.toHexString(SHA.getSHA(s));
+			// Hash to Signature
+			HashMap<String, String> obj = EC.sender(Hash);
+
 			return obj;
-			
+
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,8 +52,8 @@ public class Client {
 		}
 		return null;
 	}
-	
-	public boolean validate(HashMap<String,String> obj) {
+
+	public boolean validate(HashMap<String, String> obj) {
 		try {
 			return EC.receiver(obj);
 		} catch (InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | UnsupportedEncodingException
@@ -56,6 +63,5 @@ public class Client {
 		}
 		return false;
 	}
-	
 
 }

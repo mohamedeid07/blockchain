@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Validator {
 	
@@ -15,7 +16,7 @@ public class Validator {
 		transactions = new HashMap<Integer, Transaction>();
 		
 		BufferedReader r ;
-		
+		//int g = 0;
 		try{
 			r = new BufferedReader(new FileReader("txdataset_v2.txt"));
 			String line = r.readLine();
@@ -23,11 +24,15 @@ public class Validator {
 			while(line != null){
 				
 				Transaction current = parseLine(line);
-				
 				transactions.put(current.getId(), current);
-				
-//				printTransaction(current);
-				
+				/*
+				if(validateBalance(current)) {
+					transactions.put(current.getId(), current);
+				} else {
+					System.out.println("FALSE---------------"+current.getId()+"  "+ g);
+					g++;
+				}
+				*/
 				line = r.readLine();
 			}
 			
@@ -37,6 +42,7 @@ public class Validator {
 			e.printStackTrace();
 		}
 		
+		checkDoubleSpend();
 		return transactions;
 		
 	}
@@ -126,6 +132,9 @@ public class Validator {
 	public boolean validateBalance(Transaction t){
 		
 		int prevTransactionId = t.getPrevioustx();
+		printTransaction(t);
+		if(prevTransactionId < 0)
+			return true;
 		
 		int outputindex = t.getOutputindex() - 1 ;
 		
@@ -149,7 +158,28 @@ public class Validator {
 		
 		
 		return false;	
-		
-		
 	}
+	
+	public void checkDoubleSpend() {
+		HashMap<Integer, Boolean>  flags = new HashMap<Integer, Boolean>();
+		Iterator<Integer> iterator = transactions.keySet().iterator();
+		
+		while(iterator.hasNext()) {
+			flags.put((Integer) iterator.next(), false);
+		}
+		for (int i = 50; i < transactions.size(); i++) {
+			if (transactions.containsKey(i)) {
+				Transaction t = transactions.get(i);
+				for (int j = i+1; j < transactions.size(); j++) {
+					if (transactions.containsKey(j)) {
+						Transaction p = transactions.get(j);
+						if(t.getInput() == p.getInput() && t.getPrevioustx() == p.getPrevioustx() && t.getValues()[0] == p.getValues()[0]) {
+							System.out.println(j+"-->"+i);
+						}
+					}
+				}
+				
+			}
+		}
+	} 
 }

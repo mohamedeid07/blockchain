@@ -60,10 +60,7 @@ public class Start {
 		HashMap<Integer, Transaction> transactions = validator.readFile();
 
 		HashMap<Integer, Client> clients = new HashMap<Integer, Client>();
-
-		for (int i = 1; i < 51; i++) {
-			validator.printTransaction(transactions.get(i));
-		}
+		
 		// Creating Clients
 		for (int i = 0; i < 50; i++) {
 			clients.put(i, new Client(i));

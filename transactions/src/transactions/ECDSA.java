@@ -60,8 +60,8 @@ public class ECDSA {
         byte[] signature = ecdsaSign.sign();
         String pub = Base64.getEncoder().encodeToString(publicKey.getEncoded());
         String sig = Base64.getEncoder().encodeToString(signature);
-        System.out.println(sig);
-        System.out.println(pub);
+        //System.out.println(sig);
+        //System.out.println(pub);
 
         HashMap<String,String> obj = new HashMap<String,String>();
         obj.put("publicKey", pub);
