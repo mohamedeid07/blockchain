@@ -1,13 +1,18 @@
 package blockchain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
+import transactions.Client;
 
 public class SimpleChain {
 
     public ChainLink chain;
 
     private final P2PInterface p2p;
+    
+    private ArrayList<String> transactions;
 
     public SimpleChain(final int port) {
         p2p = new RMIBasedP2P(this, port);
@@ -53,6 +58,10 @@ public class SimpleChain {
     }
 
 	public void addTransaction(HashMap<String, String> transaction) {
-		
+		// Validating by the payee
+		Client payee = new Client(0);
+		if(payee.validate(transaction)) {
+			transactions.add(transaction.get("message"));
+		}
 	}
 }

@@ -20,7 +20,7 @@ public class Start {
 	
 	public static final String PARTICIPANTS_FILE = "./system.properties";
 	
-	private List<String> getParticipants() {
+	private static List<String> getParticipants() {
 		try {
 			FileInputStream file = new FileInputStream(PARTICIPANTS_FILE);
 			ObjectInputStream objectIn = new ObjectInputStream(file);
@@ -38,7 +38,7 @@ public class Start {
 		}
 	}
 	
-	public void broadcastTransaction(HashMap<String, String> transaction) {
+	public static void broadcastTransaction(HashMap<String, String> transaction) {
 
 		List<String> participants = getParticipants();
 		System.out.println("Broadcast <" + transaction + "> to " + participants);
@@ -76,9 +76,7 @@ public class Start {
 				Client payer = clients.get(input);
 				int previoustx = t.getPrevioustx();
 				HashMap<String, String> obj = payer.newTransaction(transactions.get(previoustx));
-				// Validating by the payee
-				Client payee = clients.get(transactions.get(i).getOutput()[0]);
-				System.out.println(payee.validate(obj));
+				broadcastTransaction(obj);
 			}
 		}
 	}
